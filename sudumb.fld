@@ -1,0 +1,84 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0304
+header_name {.h}
+code_name {.cxx}
+decl {\#include <stdio.h>} {private local
+}
+
+decl {\#include <string>} {private local
+}
+
+decl {\#include <iostream>} {private local
+}
+
+decl {\#include <fstream>} {private local
+}
+
+decl {using namespace std;} {private local
+}
+
+Function {} {open
+} {
+  code {if(argc < 2){
+	printf("not enough parameters\\n");
+	exit(0);
+}} {}
+  Fl_Window main_window {open
+    xywh {624 204 585 230} type Double color 38 visible
+  } {
+    Fl_Box {} {
+      label {Authentication is needed as the super user}
+      xywh {60 10 445 20} labelfont 1 labelcolor 7
+    }
+    Fl_Box {} {
+      label {An application is attempting to perform an action that requires privileges.}
+      xywh {42 40 445 20} labelsize 12 labelcolor 7
+    }
+    Fl_Box {} {
+      label {Authentication as the super user is required to perform this action.}
+      xywh {21 60 445 20} labelsize 12 labelcolor 7
+    }
+    Fl_Input input_fl {
+      label {Password for root: }
+      xywh {175 90 350 30} box FLAT_BOX color 35 labelsize 12 labelcolor 7 textsize 12 textcolor 7
+    }
+    Fl_Button {} {
+      label Authenticate
+      callback CB_Button
+      xywh {475 195 95 20} box FLAT_BOX color 33 labelsize 12 labelcolor 7
+    }
+    Fl_Button {} {
+      label Cancel
+      callback Exit_button
+      xywh {375 195 95 20} box FLAT_BOX color 33 labelsize 12 labelcolor 7
+    }
+    Fl_Output cmd_op {
+      label {Command: }
+      xywh {175 130 350 30} box FLAT_BOX color 35 labelsize 12 labelcolor 7 textsize 12 textcolor 7
+    }
+  }
+  code {for (int i = 1 ; i < argc ; i++) {
+	string init(cmd_op->value());
+	string add(argv[i]);
+	if (init != ""){
+		init.append(" ");
+	}
+	init.append(add);
+	cmd_op->value(init.c_str());
+}
+main_window->show();} {}
+}
+
+Function {CB_Button(Fl_Widget*, void*)} {open return_type {static void}
+} {
+  code {string paswd(input_fl->value());
+string cmd(cmd_op->value());
+main_window->hide();
+system(("echo "+paswd+ " | su -c '"+ cmd + "'&").c_str());
+exit(0);} {}
+}
+
+Function {Exit_button(Fl_Widget*, void*)} {open
+} {
+  code {exit(0);} {}
+}
