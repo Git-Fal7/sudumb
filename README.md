@@ -1,4 +1,5 @@
-```# sudumb
+```
+# sudumb
 A simple GUI for su made with fltk
 
 # depends on:
