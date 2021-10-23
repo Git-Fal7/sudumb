@@ -14,10 +14,12 @@ Fl_Secret_Input *input_fl=(Fl_Secret_Input *)0;
 Fl_Output *cmd_op=(Fl_Output *)0;
 
 int main(int argc, char **argv) {
+  //Checks if it has 1 or more parameters
   if(argc < 2){
   	printf("not enough parameters\n");
   	exit(0);
   }
+  //Main window creation
   { main_window = new Fl_Double_Window(585, 230);
     main_window->color((Fl_Color)38);
     { Fl_Box* o = new Fl_Box(60, 10, 445, 20, "Authentication is needed as the super user");
@@ -64,6 +66,8 @@ int main(int argc, char **argv) {
     } // Fl_Output* cmd_op
     main_window->end();
   } // Fl_Double_Window* main_window
+  
+  //Loops through the arguments to add it onto the command box
   for (int i = 1 ; i < argc ; i++) {
   	string init(cmd_op->value());
   	string add(argv[i]);
@@ -73,11 +77,16 @@ int main(int argc, char **argv) {
   	init.append(add);
   	cmd_op->value(init.c_str());
   }
+  
+  //Shows the window
   main_window->show();
+  
   return Fl::run();
 }
 
+//Callback for auth button
 void CB_Button(Fl_Widget*, void*) {
+  
   string paswd(input_fl->value());
   string cmd(cmd_op->value());
   main_window->hide();
